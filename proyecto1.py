@@ -5,8 +5,11 @@ class NodoLista:
 		self.anterior = None
 
 class NodoArbol:
-	def __init__(self, valor=None, parent=None, is_root=False, is_left=False, is_right=False):
-		self.valor = valor
+	def __init__(self, nombre=None, password=None, en_linea=None, lista_juegos=None, parent=None, is_root=False, is_left=False, is_right=False):
+		self.nombre = nombre
+		self.password=password
+		self.en_linea=en_linea
+		self.lista_juegos=lista_juegos
 		self.right = None
 		self.left = None
 		self.parent = parent
@@ -30,7 +33,7 @@ class NodoCabecera:
 	
 	def __init__(self, posx):
 		self.posx = posx
-		columna=ListaVertical()
+		self.columna=ListaVertical()
 		self.derecha=None
 		self.izquierda=None
 
@@ -38,7 +41,7 @@ class NodoLateral:
 
 	def __init__(self, posy):
 		self.posy = posy
-		fila=ListaHorizontal()
+		self.fila=ListaHorizontal()
 		self.siguiente=None
 		self.anterior=None	
 
@@ -96,7 +99,7 @@ class Cabeceras:
 
 	def existe(self, posx):
 		if self.vacia():
-			print "lista vacia"
+			print "columna vacia"
 			return False
 		else:
 			temporal=self.primero
@@ -178,7 +181,7 @@ class Laterales:
 
 	def existe(self, posy):
 		if self.vacia():
-			print "lista vacia"
+			print "fila vacia "
 			return False
 		else:
 			temporal=self.primero
@@ -307,6 +310,28 @@ class ListaHorizontal:
 			print str(aux.posx) + "---" + str(aux.dato)
 			aux = aux.derecha
 
+class MatrizOrtogonal:
+
+	def agregar_nodo(self, dato, posx, posy):
+
+		c=Cabeceras()
+		l=Laterales()
+
+		insercion=NodoOrtogonal(dato, posx, posy)
+
+		if c.existe(posx)==False:
+			c.insertar(posx)
+		if l.existe(posy)==False:
+			l.insertar(posy)
+
+		CTemporal=c.busqueda(posx)
+		LTemporal=l.busqueda(posy)
+
+		CTemporal.columna.insertar(insercion.dato, insercion.posx, insercion.posy)
+		LTemporal.fila.insertar(insercion.dato, insercion.posx, insercion.posy)
+
+		print "agregado nodo: dato: "+ str(insercion.dato)+ "posx: "+ str(insercion.posx) + "posy: "+str(insercion.posy)
+
 
 class ListaDoblementeEnlazada:
 	def __init__(self):
@@ -381,24 +406,24 @@ class ArbolBinario:
 		else:
 			return False
 
-	def add(self, valor):
+	def add(self, nombre, password, en_linea, lista_juegos):
 		if self.empty():
-			self.root = NodoArbol(valor=valor, is_root=True)
+			self.root = NodoArbol(nombre=nombre, password=password, en_linea=en_linea, lista_juegos=lista_juegos, is_root=True)
 		else:
 			nodo = self.__get_place(valor)
 			if valor <= nodo.value:
-				nodo.left = NodoArbol(valor=valor, parent=nodo, is_left=True)
+				nodo.left = NodoArbol(nombre=nombre, password=password, en_linea=en_linea, lista_juegos=lista_juegos, parent=nodo, is_left=True)
 			else:
-				nodo.right = NodoArbol(valor=valor, parent=nodo, is_right=True)
+				nodo.right = NodoArbol(nombre=nombre, password=password, en_linea=en_linea, lista_juegos=lista_juegos, parent=nodo, is_right=True)
 
-	def __get_place(self, valor):
+	def __get_place(self, nombre):
 		aux =self.root
 		while aux:
 			temp = aux
-			if valor <= aux.valor:
+			if nombre <= aux.nombre:
 				aux = aux.left
-			else
-			aux = aux.right
+			else:
+				aux = aux.right
 		return temp
 
 	def show_in_order(self, nodo):#izq, raiz, der
@@ -430,3 +455,12 @@ class ArbolBinario:
 				return self.buscar(nodo.left, valor)
 			else:
 				return self.buscar(nodo.right, valor)
+
+
+matriz=MatrizOrtogonal()
+
+matriz.agregar_nodo(10,5,2)
+matriz.agregar_nodo(10,5,5)
+matriz.agregar_nodo(10,5,1)
+matriz.agregar_nodo(10,5,5)
+matriz.agregar_nodo(10,5,0)

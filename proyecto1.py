@@ -94,6 +94,35 @@ class Cabeceras:
 			print str(aux.posx)
 			aux = aux.derecha
 
+	def existe(self, posx):
+		if self.vacia():
+			print "lista vacia"
+			return False
+		else:
+			temporal=self.primero
+			while temporal!=None:
+				if temporal.posx==posx:
+					print "existe"
+					return True
+				elif temporal.derecha==None:
+					print "no existe"
+					return False
+				temporal=temporal.derecha
+
+	def busqueda(self, posx):
+		if self.existe(posx):
+			temporal=self.primero
+			while temporal.posx!=posx:
+				temporal=temporal.derecha
+			print "retornando"
+			return temporal	
+
+		else:
+			print "no existe"
+			return NodoCabecera(-1)
+
+			
+
 class Laterales:
 	def __init__(self):
 		self.primero = None
@@ -145,7 +174,34 @@ class Laterales:
 		aux = self.primero
 		while aux!=None :
 			print str(aux.posy)
-			aux = aux.siguiente					
+			aux = aux.siguiente
+
+	def existe(self, posy):
+		if self.vacia():
+			print "lista vacia"
+			return False
+		else:
+			temporal=self.primero
+			while temporal!=None:
+				if temporal.posy==posy:
+					print "existe"
+					return True
+				elif temporal.siguiente==None:
+					print "no existe"
+					return False
+				temporal=temporal.siguiente
+
+	def busqueda(self, posy):
+		if self.existe(posy):
+			temporal=self.primero
+			while temporal.posy!=posy:
+				temporal=temporal.siguiente
+			print "retornando"
+			return temporal	
+
+		else:
+			print "no existe"
+			return NodoLateral(-1)					
 
 class ListaVertical:
 	def __init__(self):

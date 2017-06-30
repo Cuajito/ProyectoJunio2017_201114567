@@ -26,6 +26,76 @@ class NodoOrtogonal:
 		self.posx = posx
 		self.posy = posy
 
+class NodoCabecera:
+	
+	def __init__(self, x):
+		self.x = x
+		columna=ListaVertical()
+		self.siguiente=None
+		self.anterior=None
+
+class NodoLateral:
+
+	def __init__(self, y):
+		self.y = y
+		fila=ListaHorizontal()
+		self.derecha=None
+		self.izquierda=None	
+
+class Cabeceras:
+
+	def __init__(self):
+		self.primero = None
+		self.ultimo = None
+
+	def vacia(self):
+		return self.primero == None
+
+	def insertar(self, dato, posx, posy):
+		
+		nodo = NodoOrtogonal(dato, posx, posy)
+
+		if self.vacia():
+			self.primero=self.ultimo=nodo
+		else:
+			if nodo.posy<self.primero.posy:
+				self.agregar_inicio(nodo)
+			elif nodo.posy>self.ultimo.posy:
+				self.agregar_final(nodo)
+			else:
+				self.agregar_medio(nodo)
+
+	def agregar_inicio(self, nodo):
+		
+		aux = nodo
+		aux.siguiente = self.primero
+		self.primero.anterior = aux
+		self.primero = aux						
+
+	def agregar_final(self, nodo):
+		
+		aux = self.ultimo
+		self.ultimo = aux.siguiente = nodo
+		self.ultimo.anterior = aux
+		
+	def agregar_medio(self, nodo):
+		temporal1=self.primero
+		while temporal1.posy<nodo.posy:
+			temporal1=temporal1.siguiente
+
+		temporal2=temporal1.anterior
+		
+		temporal2.siguiente=nodo
+		temporal1.anterior=nodo
+		nodo.siguiente=temporal1
+		nodo.anterior=temporal2		
+			
+	def recorrer_inicio_fin(self):
+		aux = self.primero
+		while aux!=None :
+			print str(aux.posy) + "---" + str(aux.dato)
+			aux = aux.siguiente		
+
 class ListaVertical:
 	def __init__(self):
 		self.primero = None
@@ -48,24 +118,18 @@ class ListaVertical:
 			else:
 				self.agregar_medio(nodo)
 
-	
-
 	def agregar_inicio(self, nodo):
-		if self.vacia():
-			self.primero = self.ultimo = nodo
-		else:
-			aux = nodo
-			aux.siguiente = self.primero
-			self.primero.anterior = aux
-			self.primero = aux						
+		
+		aux = nodo
+		aux.siguiente = self.primero
+		self.primero.anterior = aux
+		self.primero = aux						
 
 	def agregar_final(self, nodo):
-		if self.vacia():
-			self.primero = self.ultimo = nodo
-		else:
-			aux = self.ultimo
-			self.ultimo = aux.siguiente = nodo
-			self.ultimo.anterior = aux
+		
+		aux = self.ultimo
+		self.ultimo = aux.siguiente = nodo
+		self.ultimo.anterior = aux
 		
 	def agregar_medio(self, nodo):
 		temporal1=self.primero
@@ -85,7 +149,56 @@ class ListaVertical:
 			print str(aux.posy) + "---" + str(aux.dato)
 			aux = aux.siguiente		
 		
+class ListaHorizontal:
+	def __init__(self):
+		self.primero = None
+		self.ultimo = None
 
+	def vacia(self):
+		return self.primero == None
+
+	def insertar(self, dato, posx, posy):
+		
+		nodo = NodoOrtogonal(dato, posx, posy)
+
+		if self.vacia():
+			self.primero=self.ultimo=nodo
+		else:
+			if nodo.posx<self.primero.posx:
+				self.agregar_inicio(nodo)
+			elif nodo.posx>self.ultimo.posx:
+				self.agregar_final(nodo)
+			else:
+				self.agregar_medio(nodo)
+
+	def agregar_inicio(self, nodo):
+		aux = nodo
+		aux.derecha = self.primero
+		self.primero.izquierda = aux
+		self.primero = aux						
+
+	def agregar_final(self, nodo):
+		aux = self.ultimo
+		self.ultimo = aux.derecha = nodo
+		self.ultimo.izquierda = aux
+		
+	def agregar_medio(self, nodo):
+		temporal1=self.primero
+		while temporal1.posx<nodo.posx:
+			temporal1=temporal1.derecha
+
+		temporal2=temporal1.izquierda
+		
+		temporal2.derecha=nodo
+		temporal1.izquierda=nodo
+		nodo.derecha=temporal1
+		nodo.izquierda=temporal2		
+			
+	def recorrer_inicio_fin(self):
+		aux = self.primero
+		while aux!=None :
+			print str(aux.posx) + "---" + str(aux.dato)
+			aux = aux.derecha
 
 
 class ListaDoblementeEnlazada:
@@ -210,12 +323,3 @@ class ArbolBinario:
 				return self.buscar(nodo.left, valor)
 			else:
 				return self.buscar(nodo.right, valor)
-
-
-class MatrizDispersa:
-	def __init__():
-		self.primero = None
-		self.ultimo = None
-		self.size = 0	
-
-		#	

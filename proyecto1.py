@@ -14,7 +14,7 @@ class NodoArbol:
 		self.is_left = is_left
 		self.is_right = is_right
 
-class NodoMatriz:
+class NodoOrtogonal:
 	def __init__(self, dato, posx, posy ):
 		self.dato = dato
 		self.arriba = None
@@ -37,8 +37,41 @@ class ListaVertical:
 		else:
 			return False 
 
-class NodoCabecera:
-	def __init__(self):
+	def insertar(self, dato, posx, posy):
+			if vacia():
+				self.first=self.last=NodoOrtogonal(dato, posx, posy)
+			else:
+				if nodo.posy<first.posy:
+
+					insertarFrente(nodo)
+
+				elif nodo.posy>last.posy:
+
+					insertarFinal(nodo)
+				
+				else:
+
+					insertarMedio(nodo)
+
+
+	
+
+	def insertarFrente(self, nodo):
+
+		first.arriba=nodo
+		nodo.abajo=first
+		first=first.arriba
+
+
+	def insertarFinal(self, nodo):
+
+		last.abajo=nodo
+		nodo.arriba=last
+		last=last.abajo
+
+
+	def insertarMedio(self, nodo):
+		
 
 
 

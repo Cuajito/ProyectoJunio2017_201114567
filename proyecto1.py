@@ -28,19 +28,19 @@ class NodoOrtogonal:
 
 class NodoCabecera:
 	
-	def __init__(self, x):
-		self.x = x
+	def __init__(self, posx):
+		self.posx = posx
 		columna=ListaVertical()
-		self.siguiente=None
-		self.anterior=None
+		self.derecha=None
+		self.izquierda=None
 
 class NodoLateral:
 
-	def __init__(self, y):
-		self.y = y
+	def __init__(self, posy):
+		self.posy = posy
 		fila=ListaHorizontal()
-		self.derecha=None
-		self.izquierda=None	
+		self.siguiente=None
+		self.anterior=None	
 
 class Cabeceras:
 
@@ -51,9 +51,60 @@ class Cabeceras:
 	def vacia(self):
 		return self.primero == None
 
-	def insertar(self, dato, posx, posy):
+	def insertar(self, posx):
 		
-		nodo = NodoOrtogonal(dato, posx, posy)
+		nodo = NodoCabecera(posx)
+
+		if self.vacia():
+			self.primero=self.ultimo=nodo
+		else:
+			if nodo.posx<self.primero.posx:
+				self.agregar_inicio(nodo)
+			elif nodo.posx>self.ultimo.posx:
+				self.agregar_final(nodo)
+			else:
+				self.agregar_medio(nodo)
+
+	def agregar_inicio(self, nodo):
+		aux = nodo
+		aux.derecha = self.primero
+		self.primero.izquierda = aux
+		self.primero = aux						
+
+	def agregar_final(self, nodo):
+		aux = self.ultimo
+		self.ultimo = aux.derecha = nodo
+		self.ultimo.izquierda = aux
+		
+	def agregar_medio(self, nodo):
+		temporal1=self.primero
+		while temporal1.posx<nodo.posx:
+			temporal1=temporal1.derecha
+
+		temporal2=temporal1.izquierda
+		
+		temporal2.derecha=nodo
+		temporal1.izquierda=nodo
+		nodo.derecha=temporal1
+		nodo.izquierda=temporal2		
+			
+	def recorrer_inicio_fin(self):
+		aux = self.primero
+		while aux!=None :
+			print str(aux.posx)
+			aux = aux.derecha
+
+class Laterales:
+	def __init__(self):
+		self.primero = None
+		self.ultimo = None
+
+	def vacia(self):
+		return self.primero == None
+
+	def insertar(self, posy):
+		
+		nodo = NodoLateral(posy)
 
 		if self.vacia():
 			self.primero=self.ultimo=nodo
@@ -93,8 +144,8 @@ class Cabeceras:
 	def recorrer_inicio_fin(self):
 		aux = self.primero
 		while aux!=None :
-			print str(aux.posy) + "---" + str(aux.dato)
-			aux = aux.siguiente		
+			print str(aux.posy)
+			aux = aux.siguiente					
 
 class ListaVertical:
 	def __init__(self):

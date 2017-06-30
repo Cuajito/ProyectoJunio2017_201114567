@@ -17,8 +17,8 @@ class NodoArbol:
 class NodoOrtogonal:
 	def __init__(self, dato, posx, posy ):
 		self.dato = dato
-		self.arriba = None
-		self.abajo = None
+		self.anterior = None
+		self.siguiente = None
 		self.derecha = None
 		self.izquierda = None
 		self.adelante = None
@@ -28,49 +28,62 @@ class NodoOrtogonal:
 
 class ListaVertical:
 	def __init__(self):
-		self.first = None
-		self.last = None
+		self.primero = None
+		self.ultimo = None
 
 	def vacia(self):
-		if self.primero == None:
-			return True
-		else:
-			return False 
+		return self.primero == None
 
 	def insertar(self, dato, posx, posy):
-			if vacia():
-				self.first=self.last=NodoOrtogonal(dato, posx, posy)
+		
+		nodo = NodoOrtogonal(dato, posx, posy)
+
+		if self.vacia():
+			self.primero=self.ultimo=nodo
+		else:
+			if nodo.posy<self.primero.posy:
+				self.agregar_inicio(nodo)
+			elif nodo.posy>self.ultimo.posy:
+				self.agregar_final(nodo)
 			else:
-				if nodo.posy<first.posy:
-
-					insertarFrente(nodo)
-
-				elif nodo.posy>last.posy:
-
-					insertarFinal(nodo)
-				
-				else:
-
-					insertarMedio(nodo)
-
+				self.agregar_medio(nodo)
 
 	
 
-	def insertarFrente(self, nodo):
+	def agregar_inicio(self, nodo):
+		if self.vacia():
+			self.primero = self.ultimo = nodo
+		else:
+			aux = nodo
+			aux.siguiente = self.primero
+			self.primero.anterior = aux
+			self.primero = aux						
 
-		first.arriba=nodo
-		nodo.abajo=first
-		first=first.arriba
+	def agregar_final(self, nodo):
+		if self.vacia():
+			self.primero = self.ultimo = nodo
+		else:
+			aux = self.ultimo
+			self.ultimo = aux.siguiente = nodo
+			self.ultimo.anterior = aux
+		
+	def agregar_medio(self, nodo):
+		temporal1=self.primero
+		while temporal1.posy<nodo.posy:
+			temporal1=temporal1.siguiente
 
-
-	def insertarFinal(self, nodo):
-
-		last.abajo=nodo
-		nodo.arriba=last
-		last=last.abajo
-
-
-	def insertarMedio(self, nodo):
+		temporal2=temporal1.anterior
+		
+		temporal2.siguiente=nodo
+		temporal1.anterior=nodo
+		nodo.siguiente=temporal1
+		nodo.anterior=temporal2		
+			
+	def recorrer_inicio_fin(self):
+		aux = self.primero
+		while aux!=None :
+			print str(aux.posy) + "---" + str(aux.dato)
+			aux = aux.siguiente		
 		
 
 

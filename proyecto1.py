@@ -461,11 +461,3 @@ class ArbolBinario:
 			else:
 				return self.buscar(nodo.right, nombre)
 
-lista = ListaDoblementeEnlazada()
-arbol = ArbolBinario()
-
-arbol.add("renan", "renan", True, lista)
-arbol.add("mafer", "mafer", True, lista)
-arbol.add("jerv", "jerv", True, lista)
-
-arbol.show_pre_order(arbol.root)
